@@ -1,9 +1,10 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import pyautogui
+import pyautogui 
 import time
 import random
 import threading
+import pyperclip   # to copy the message to clipboard
 
 app = Flask(__name__)
 CORS(app)  # To allow frontend to communicate
@@ -12,8 +13,10 @@ def start_spam(messages, count, delay):
     time.sleep(5)  # Give user time to click on chat
     for i in range(count):
         msg = random.choice(messages)
-        pyautogui.typewrite(msg)
-        pyautogui.press("enter")
+        # pyautogui.typewrite(msg) 
+        pyperclip.copy(msg)  
+        pyautogui.hotkey("ctrl", "v") 
+        pyautogui.press("enter") 
         time.sleep(delay)
 
 @app.route("/start", methods=["POST"])

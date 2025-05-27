@@ -1,10 +1,16 @@
 import { useState } from "react";
+import EmojiPicker from "emoji-picker-react";
 
 function App() {
   const [messages, setMessages] = useState("");
   const [count, setCount] = useState("");
   const [delay, setDelay] = useState("");
   const [output, setOutput] = useState("");
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
+  const handleEmojiClick = (emojiData) => {
+    setMessages((prev) => prev + emojiData.emoji);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,7 +30,9 @@ function App() {
       });
 
       const result = await response.json();
-      setOutput(`<strong>${result.status}</strong><br/>Click on WhatsApp chat in 5 seconds!`);
+      setOutput(
+        `<strong>${result.status}</strong><br/>Click on WhatsApp chat in 5 seconds!`
+      );
 
       // Clear form fields
       setMessages("");
@@ -43,7 +51,9 @@ function App() {
     <div className="bg-gradient-to-br from-[#0f172a] to-[#1e293b] flex items-center justify-center min-h-screen p-4">
       <div className="bg-white shadow-lg rounded-2xl p-6 w-full max-w-md">
         <header className="text-center pb-10 pt-6">
-          <h1 className="text-4xl sm:text-4xl md:text-5xl font-bold text-indigo-600">ChatBlaster💥</h1>
+          <h1 className="text-4xl sm:text-4xl md:text-5xl font-bold text-indigo-600">
+            ChatBlaster💥
+          </h1>
           <p className="text-gray-500 mt-2">
             Blast fun messages to your friends like never before!
           </p>
@@ -63,7 +73,21 @@ function App() {
               placeholder="Hello, What's up?, 😂😂😂"
               required
             ></textarea>
+
+            <button
+              type="button"
+              onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+              className="bg-gray-100 text-xs font-medium p-2 rounded hover:bg-gray-200"
+            >
+              {showEmojiPicker ? "Close" : "Pick Emoji"}
+            </button>
           </div>
+
+          {showEmojiPicker && (
+            <div className="mt-2">
+              <EmojiPicker onEmojiClick={handleEmojiClick} />
+            </div>
+          )}
 
           {/* Count input */}
           <div>
